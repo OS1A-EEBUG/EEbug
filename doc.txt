@@ -1,0 +1,9 @@
+demo.c - example program, in C.
+This is what's running on the bug right now.
+This is also totally useless.
+
+build.sh - compiles a project, from the .c to the .hex
+Shows an assembly code listing for verification.
+Invocation is:
+$./build.sh demo
+to compile demo.c.
