@@ -11,6 +11,8 @@
 
 #define DUTY_CYCLE_MASK 0x7F // 0..128
 
+extern void io_init();
+
 extern void adc_init();
 extern uint16_t adc_read(uint8_t);
 

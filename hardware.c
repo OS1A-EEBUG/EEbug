@@ -48,6 +48,12 @@ uint16_t adc_read(uint8_t pin)
 	return ret;
 }
 
+inline void io_init()
+{
+	DDRB |= (1 << PIN_L_MOTOR | 1 << PIN_R_MOTOR);
+	// FIXME more shit here.
+}
+
 ISR(TIMER0_OVF_vect) {
 
 	_isr_duty_count++;
