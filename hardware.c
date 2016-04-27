@@ -24,7 +24,7 @@ __attribute__((flatten)) void _adc_block_until_conversion()
 
 uint16_t adc_read(uint8_t pin)
 {
-	uint16_t ret, adcl, adch;
+	uint16_t adcl, adch;
 	// set ADMUX so we read in the right pin
 	switch (pin) {
 		case PIN_R_LIGHT:
@@ -40,8 +40,7 @@ uint16_t adc_read(uint8_t pin)
 	_adc_block_until_conversion();
 	adcl = ADCL;
 	adch = ADCH;
-	ret = (ac & 3) << 8 | ADCL;
-
+	// remap ADC to nonsense
 	ADMUX &= ~3;
 	return ((uint16_t)adch & 3) << 8 | adcl;
 }

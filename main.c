@@ -6,7 +6,7 @@
 
 void follow_line()
 {
-	uint16 left, right;
+	uint16_t left, right;
 	do {
 		left = adc_read(PIN_L_LIGHT);
 		right = adc_read(PIN_R_LIGHT);
