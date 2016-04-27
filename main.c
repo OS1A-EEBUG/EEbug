@@ -15,12 +15,24 @@ void follow_line()
 		pwm_set(PIN_R_MOTOR, right >> 3);
 		pwm_set(PIN_L_MOTOR, left  >> 3);
 	} while (left > 256 && right > 256);
-		
 }
 
 void spiral()
 {
-	// TODO
+	uint8_t left = DUTY_CYCLE_MASK, right = DUTY_CYCLE_MASK;
+	// full steam ahead :P
+	pwm_set(PIN_R_MOTOR, right);
+	pwm_set(PIN_L_MOTOR, left);
+	for (int i = 0; i < 3; i++) _delay_ms(100);
+	while (left > 10) {
+		left -= 2;
+		right -= 1;
+		pwm_set(PIN_R_MOTOR, right);
+		pwm_set(PIN_L_MOTOR, left);
+		_delay_ms(20);
+	}
+	pwm_set(PIN_R_MOTOR, 0);
+	pwm_set(PIN_L_MOTOR, 0);
 }
 
 int main()
