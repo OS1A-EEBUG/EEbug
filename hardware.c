@@ -8,11 +8,11 @@ static volatile uint8_t _isr_duty_count = 0;
 
 inline void adc_init()
 {
-	// Use 1.1V reference
-	// clear other two relevant pins
-	ADMUX &= ~0x20;
-	// and set the one we want.
-	ADMUX |= 1 << 7;
+	ADCSRA |= 1 << 7;
+	// Vcc ref -> clear bits 7, 6, 4
+	ADMUX &= ~(1 << 7);
+	ADMUX &= ~(1 << 6);
+	ADMUX &= ~(1 << 4);
 }
 
 __attribute__((flatten)) void _adc_block_until_conversion()
@@ -24,7 +24,7 @@ __attribute__((flatten)) void _adc_block_until_conversion()
 
 uint16_t adc_read(uint8_t pin)
 {
-	int ret;
+	uint16_t ret, adcl, adch;
 	// set ADMUX so we read in the right pin
 	switch (pin) {
 		case PIN_R_LIGHT:
@@ -35,17 +35,15 @@ uint16_t adc_read(uint8_t pin)
 			break;
 	}
 
-	// enable the ADC
-	ADCSRA |= 1 << 7;
 	// start the conversion
 	ADCSRA |= 1 << 6;
 	_adc_block_until_conversion();
-	ret = (ADCH & 3) << 8 | ADCL;
+	adcl = ADCL;
+	adch = ADCH;
+	ret = (ac & 3) << 8 | ADCL;
 
-	// clean-up time; disable the ADC and remap ADMUX to nonsense
-	ADCSRA &= ~(1 << 7);
 	ADMUX &= ~3;
-	return ret;
+	return ((uint16_t)adch & 3) << 8 | adcl;
 }
 
 inline void io_init()
