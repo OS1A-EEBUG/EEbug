@@ -6,7 +6,16 @@
 
 void follow_line()
 {
-	// TODO	
+	uint16 left, right;
+	do {
+		left = adc_read(PIN_L_LIGHT);
+		right = adc_read(PIN_R_LIGHT);
+		left = 1024 - left;
+		right = 1024 - right;
+		pwm_set(PIN_R_MOTOR, right >> 3);
+		pwm_set(PIN_L_MOTOR, left  >> 3);
+	} while (left > 256 && right > 256);
+		
 }
 
 void spiral()
