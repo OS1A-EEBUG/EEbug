@@ -10,8 +10,6 @@ void follow_line()
 	do {
 		left = adc_read(PIN_L_LIGHT);
 		right = adc_read(PIN_R_LIGHT);
-		left = 1024 - left;
-		right = 1024 - right;
 		pwm_set(PIN_R_MOTOR, right >> 3);
 		pwm_set(PIN_L_MOTOR, left  >> 3);
 	} while (left > 256 && right > 256);
@@ -23,7 +21,7 @@ void spiral()
 	// full steam ahead :P
 	pwm_set(PIN_R_MOTOR, right);
 	pwm_set(PIN_L_MOTOR, left);
-	for (int i = 0; i < 3; i++) _delay_ms(100);
+	_delay_ms(65000);
 	while (left > 10) {
 		left -= 2;
 		right -= 1;
@@ -40,6 +38,7 @@ int main()
 	io_init();
 	adc_init();
 	pwm_init();
+	for (int i = 0; i < 5; i++) _delay_ms(1000);
 	follow_line();
 	spiral();
 	return 0;
